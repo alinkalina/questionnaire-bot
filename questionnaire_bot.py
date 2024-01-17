@@ -2,8 +2,9 @@ import telebot
 from telebot import types
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InputFile
 from questionnaire_info import questions, start_message, help_message, users, file_generation, check_result
+from token_file import token
 
-token = ''
+
 bot = telebot.TeleBot(token)
 test_start = False
 answers_list = []
@@ -38,7 +39,6 @@ def next_question(message):
         with open(photo, 'rb') as file:
             bot.send_photo(user_id, InputFile(file), caption=text, reply_markup=types.ReplyKeyboardRemove())
         file.close()
-        print(users)
 
 
 @bot.message_handler(commands=['start'])
@@ -67,7 +67,6 @@ def start_test(message):
 
 @bot.message_handler(content_types=['text'])
 def send_question(message):
-    print(users)
     user_id = message.chat.id
     try:
         if users != {} and users[user_id]['test-process']:
@@ -84,11 +83,11 @@ def send_question(message):
             bot.send_message(message.chat.id, '❗ Пожалуйста, пользуйтесь командами')
     except AttributeError or KeyError:
         bot.send_message(message.chat.id, '❗ Ой, произошла какая-то ошибка. Скоро её исправят!')
-        print('❗ Ой, произошла какая-то ошибка. Скоро её исправят!')
 
 
 @bot.message_handler(content_types=['photo', 'audio', 'video', 'document', 'sticker', 'voice'])
 def send_question(message):
     bot.send_message(message.chat.id, '❗ Бот отвечает только на текстовые сообщения')
+
 
 bot.polling()
