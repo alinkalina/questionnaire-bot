@@ -2,12 +2,9 @@ import telebot
 from telebot import types
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InputFile
 from questionnaire_info import questions, start_message, help_message, users, file_generation, check_result
-import os
-import dotenv
+from configs import token
 
 
-dotenv.load_dotenv()
-token = os.getenv('token')
 bot = telebot.TeleBot(token)
 test_start = False
 answers_list = []
